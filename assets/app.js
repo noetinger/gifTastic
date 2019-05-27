@@ -2,69 +2,82 @@
     //Topics needs to be an array of strings...
 var topics = {}
 
-//Click Function to obtain Giphy
-$("button").on("click", function(){
-    event.preventDefault();
-   
-    //Varibale to reference the index of the Topics Array for when button is pushed
-    var topicButton = $(this).attr("data-name");
+function buildQueryURL () {
+     //Search URL
+     var queryURL = api.giphy.com/GET/v1/gifs/search;
 
-    //Create URL from search term         ********************************** 
-    var queryURL = "*****" + topicButton + "*****";
+     //API Object and Key 
+     var queryParams = {"api-key": "ewxlNgPsFw5Af9hjNTqz6Zl29diA5FRa"};
+ 
+     //Take input from Search Bar and add to queryParams
+     queryParams.q=$("#search-api").val().trim()
 
-    //API Object and Key        **********************************    
-    var queryParams = {"api-key": ####};
+     //Add limit of 10 to QueryParams
+     queryParams.limit = 10
 
-    //Take input from Search Bar and add to queryParams
-    queryParams.q=$("#search-api").val().trim()
+     //Log URL
+     console.log(queryURL + $.param(queryParams));
+     return queryURL + $.param(queryParams);
+}
 
+function updatePage (giphy) {
     //Add to topics array
     var topic = $("#search-api").val().trim();
     $(topics).push(topic);
+    
+    //Store search item in topics gif
+    ("button-div").text(JSON.stringify(response));
+
+    //Stores array of results in results variable
+    var results = response.data;
+
+    //Display first 10 Giphy's in "gif-section" 
+    var numGiphy = 10
+
+    for(var i=0; 0 < numGiphy; i++){s
+
+        //Create div for each gif
+        var gifDiv = $("<div>");
+
+        //Store ratings variable
+        var rating = results.rating;
+
+        //Create paragraph tag with rating reults
+        var p = $("<p>").text("Rating: " + rating);
+
+        //Create image tag for Giphy
+        var giphyImage = $("<img>");
+
+          //Attribute image src to image tag
+        giphyImage.attr("src", results.images.fixed_height.url);
+
+        //Append <p> and <img> to gifDiv
+        gifDiv.append(p);
+        gifDiv.append(giphyImage);
+
+        //Prepend gifts to the "gif-section" in HTML
+        $("gif-section").prepend(gifDiv);
+
+    }
+    renderButtons();
+}
+
+//Click Function to obtain Giphy
+$("button").on("click", function(){
+    event.preventDefault();
+    console.log("button clicked line 68")
+
+    // Obtain QueryURL from BuildQueryURL Function
+    var queryURL = buildQueryURL();
 
     //Search API
     $.ajax({
         url: queryURL,
         method: "GET"
         })
-    .then(function(response){
-        //Store search item in topics gif
-        $("button-div").text(JSON.stringify(response));
-
-        //Stores array of results in results variable        ********************************** 
-        var results = response.data;
-
-        //Display first 10 Giphy's in "gif-section" 
-        var numGiphy = 10
-
-        for(var i=0; 0 < numGiphy; i++){
-
-            //Create div for each gif
-            var gifDiv = $("<div>");
-
-            //Store ratings variable
-            var rating = results[i].rating;
-
-            //Create paragraph tag with rating reults
-            var p = $("<p>").text("Rating: " + rating);
-
-            //Create image tag for Giphy
-            var giphyImage = $("<img>");
-
-            //Attribute image src to image tag
-            giphyImage.attr("src", results[i].images.fixed_height.url);
-
-            //Append <p> and <img> to gifDiv
-            gifDiv.append(p);
-            gifDiv.append(giphyImage);
-
-            //Prepend gifts to the "gif-section" in HTML
-            $("gif-section").prepend(gifDiv);
-
-        }
-    })
-    renderButtons();
+    .then(updatePage)
 })
+
 //Create button from "topics" string and append to "button div"
 function renderButtons(){
     $("#button-div").empty()
@@ -92,4 +105,3 @@ function renderButtons(){
 
 
 // ********* Reference "Click JSON Class Activity **********"
-//Should I break up Click function into click function and display information function?

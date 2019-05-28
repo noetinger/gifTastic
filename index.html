@@ -5,25 +5,36 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Giphy Fun</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" href="assets/styles.css" type="text/css">
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 </head>
 <body>
     <!--Put Gif Search Buttons Here-->
-    <div id="button-div">
+    <div class="row">
+        <div class="col-md-12">
+            <div id="button-div">
 
+            </div>
+        </div>
     </div>
 
     <!--Put Images/Videos Here-->
-    <div id="gif-selection">
+    <div class="row">
+        <div class="col-md-8">
+            <div id="gif-section">
 
-    </div>
+            </div>
+        </div>
 
     <!--Search Form-->
-    <div id="input-div">
-        <form>
-            <span id="input-span"><input id="search-box" type="text"><button id="search-api" value="Load Giphy" type="submit">Submit</button></span>
-        </form>
+        <div class="col-md-4">
+            <div id="input-div">
+                <form>
+                    <span id="input-span"><input id="search-box" type="text"><button id="search-api" value ="" type="submit">Search Giphy's</button></span>
+                </form>
+            </div>
+        </div>
     </div>
     
     <script src="assets/app.js" defer></script>

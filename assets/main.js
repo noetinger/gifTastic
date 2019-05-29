@@ -1,4 +1,4 @@
-var topics = [];
+var topics = ["dogs","cats","alpaca"];
 console.log(topics)
 
 //render buttons
@@ -6,7 +6,7 @@ function renderButtons () {
     $("#button-div").empty()
     //assign each topic a button
     for(var i = 0; i < topics.length; i++){
-        var addButton = $("<button type='button'>");
+        var addButton = $("<button>");
 
         //Add class to buttons
         addButton.addClass("gifButton")
@@ -16,22 +16,24 @@ function renderButtons () {
     
         //Add button text
         addButton.text(topics[i]);
+
+        //On Click
+        addButton.on("click", function() {
+            event.preventDefault();
+        
+            alert("Topic Button Clicked") 
+        
+            //var userInput = $(".gifButton").text();
+        
+            console.log("line 28: " + addButton.text());
+        
+            searchGif(addButton.text());
+        })
     
         //Add buttons to button-div
         $("#button-div").append(addButton);
     }
 };
-
-//When a topic button is clicked        ************      Why doesn't this work?         *******
-$(".gifButton").on("click", function() {
-    event.preventDefault();
-
-    alert("Topic Button Clicked")
-
-    var userInput = $("data-name").val().trim();
-
-    searchGif(userInput);
-})
 
 //When the submit/search button is clicked
 $("#search-api").on("click", function() {
@@ -91,6 +93,9 @@ function displayGiphy(response) {
     
         //Attribute image src to image tag
         giphyImage.attr("src", results[j].images.fixed_height.url);
+        giphyImage.attr("data-state", "animate");
+        giphyImage.attr("data-animate", results[j].images.fixed_height.url);
+        giphyImage.attr("data-still", results[j].images.fixed_height_still.url);
     
         //Append <p> and <img> to gifDiv
         gifDiv.append(p);
@@ -103,22 +108,24 @@ function displayGiphy(response) {
     //When the movement class/div is clicked...       
     $(".movement").on("click", function(){
         event.preventDefault();
-        alert("It worked!")  
         //"state" = the data-state of the clicked image
-        var state = $(this).attr("data-state", "animate");
-        console.log(this);
-
+        let thisElement = $(this)
+        var state = $(this).attr("data-state");
+        console.log(thisElement);
         //If state is 'still', assign animated link to image and change value to animated.   ********NEITHER OF THESE WORK*******
         if (state === "still"){
-            $(this).attr("src", $(this).attr(response.data.images.fixed_height.url)); 
-            $(this).attr("data-state", "animate");
+            var url = thisElement.attr("data-animate");
+            thisElement.attr("src", url);
+            thisElement.attr("data-state", "animate");
 
         //If state is 'animated', assign still link to image and change value to still.
         } else {
-            $(this).attr("src", $(this).attr(response.data.images.fixed_height_still.url)); 
-            $(this).attr("data-state", "still");
+            var url = thisElement.attr("data-still");
+            thisElement.attr("src", url); 
+            thisElement.attr("data-state", "still");
         }
     });
 
     renderButtons();
 }
+renderButtons();
